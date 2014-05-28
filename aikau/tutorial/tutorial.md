@@ -36,11 +36,17 @@ To make sure everyone can understand and relate to the code in this tutorial, he
 
 ## Tools
 
+While wirting this tutorial the following tools have been used:
+
 - Mac OS X 10.9.1
 - Maven 3.1.1 (Installed with [Homebrew](http://brew.sh/))
 - Java 1.7.0_51
 - Alfresco Maven SDK 1.1.1
 - Alfresco 4.2.f
+
+## Getting the code
+
+All examples in this tutorial are available on [GitHub](https://github.com/ohej/alfresco-tutorials). 
 
 ## File structure
 
@@ -58,7 +64,7 @@ File | Description
 
 ## Running the examples
 
-Clone the code from Github **(LINK)**, make sure you have an Alfresco instance running on port 8080, enter the `share-widget-tutorial` folder and run the following command: 
+Clone the code from [GitHub](https://github.com/ohej/alfresco-tutorials), make sure you have an Alfresco instance running on port 8080, enter the `aikau/aikau-tutorial-share/` folder and run the following command: 
 
 	mvn integration-test -Pamp-to-war
 
@@ -86,7 +92,7 @@ This chapter will focus on how to create a custom page in Share with a single we
 
 Let's create a page named "Simple page", with a "Hello World" button. Create a new web script "simple-page", like this:
 
-**simple-page.get.desc.xml**
+`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/simple-page.get.desc.xml`
    
 	<webscript>
     	<shortname>Simple Page</shortname>
@@ -95,11 +101,11 @@ Let's create a page named "Simple page", with a "Hello World" button. Create a n
     	<url>/simple-page</url>
 	</webscript>   
 
-**simple-page.get.html.ftl**
+`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/simple-page.get.html.ftl`
 
 	<@processJsonModel group="share"/>
 
-**simple-page.get.js**
+`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/simple-page.get.js`
 
 	model.jsonModel = {
 	    widgets: [{
@@ -110,7 +116,6 @@ Let's create a page named "Simple page", with a "Hello World" button. Create a n
 	    }]
 	};
 
-Place these three files in `src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages`
 
 Start up Share via Maven with this command:
 
@@ -153,7 +158,6 @@ The result looks like this:
 The Share header widget is currently (as of 4.2.f) the only component in Share using the new Aikau framework. The header includes the menu bar, search, logo and title. If we wish to add a title next to the logo, we'll need to define a title widget, which Share will take into account when rendering it with the header. If the page is rendered without the header, it simply ignores the widget.
 
 To add the title to our simple page, modify the JSON model and add the title:
-
 
 	model.jsonModel = {
 	    widgets: [{

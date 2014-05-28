@@ -1,6 +1,6 @@
 % Working with the new Aikau framework in Alfresco Share 4.2
 % Ole Hejlskov
-% April 2014
+% May 2014
 
 # License
 

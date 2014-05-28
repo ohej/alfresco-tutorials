@@ -1,0 +1,6 @@
+<webscript>
+    <shortname>Publish-Subscription page</shortname>
+    <description>Example on using pub/sub with widgets</description>
+    <family>Share</family>
+    <url>/pub-sub-example</url>
+</webscript>

@@ -1,0 +1,8 @@
+.ajax-widget {
+    border: 1px #EBEBEB solid;
+    padding: 1em;
+}
+
+.ajax-widget td,th{
+    padding: 0.8em;
+}

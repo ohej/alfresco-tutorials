@@ -1,0 +1,15 @@
+<extension>
+  <modules>
+    <module>
+      <id>Add custom menu item to header</id>
+      <version>1.0</version>
+      <auto-deploy>true</auto-deploy>  
+      <customizations>
+        <customization>
+          <targetPackageRoot>org.alfresco.share.header</targetPackageRoot>
+          <sourcePackageRoot>com.example.header</sourcePackageRoot>
+        </customization>
+      </customizations>
+    </module>
+  </modules>
+</extension>

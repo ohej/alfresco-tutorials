@@ -1,0 +1,6 @@
+<webscript>
+    <shortname>Ajax Page</shortname>
+    <description>Ajax page with a bit of DOM</description>
+    <family>Share</family>
+    <url>/ajax-page</url>
+</webscript>

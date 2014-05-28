@@ -1,0 +1,6 @@
+<webscript>
+    <shortname>Custom Widget Page</shortname>
+    <description>Page with custom widget</description>
+    <family>Share</family>
+    <url>/custom-widget-page</url>
+</webscript>

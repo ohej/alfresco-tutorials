@@ -44,6 +44,7 @@
 </ul></li>
 <li><a href="#setup">Setup</a><ul>
 <li><a href="#tools">Tools</a></li>
+<li><a href="#getting-the-code">Getting the code</a></li>
 <li><a href="#file-structure">File structure</a></li>
 <li><a href="#running-the-examples">Running the examples</a></li>
 </ul></li>
@@ -103,6 +104,7 @@
 <h1 id="setup">Setup</h1>
 <p>To make sure everyone can understand and relate to the code in this tutorial, here is a description of the tools used for building these examples, and the file structure within the examples.</p>
 <h2 id="tools">Tools</h2>
+<p>While wirting this tutorial the following tools have been used:</p>
 <ul>
 <li>Mac OS X 10.9.1</li>
 <li>Maven 3.1.1 (Installed with <a href="http://brew.sh/">Homebrew</a>)</li>
@@ -110,6 +112,8 @@
 <li>Alfresco Maven SDK 1.1.1</li>
 <li>Alfresco 4.2.f</li>
 </ul>
+<h2 id="getting-the-code">Getting the code</h2>
+<p>All examples in this tutorial are available on <a href="https://github.com/ohej/alfresco-tutorials">GitHub</a>.</p>
 <h2 id="file-structure">File structure</h2>
 <p>The Maven SDK will provide us with the initial directory structure, which contains some sample data. For all examples in this tutorial the sample data has been removed, and the <code>src/main/amp/config/alfresco/web-extension</code> folder has been added, as well as the <code>src/main/amp/file-mapping.properties</code> file.</p>
 <p>Here are some notes on what goes where</p>
@@ -144,7 +148,7 @@
 </tbody>
 </table>
 <h2 id="running-the-examples">Running the examples</h2>
-<p>Clone the code from Github <strong>(LINK)</strong>, make sure you have an Alfresco instance running on port 8080, enter the <code>share-widget-tutorial</code> folder and run the following command:</p>
+<p>Clone the code from <a href="https://github.com/ohej/alfresco-tutorials">GitHub</a>, make sure you have an Alfresco instance running on port 8080, enter the <code>aikau/aikau-tutorial-share/</code> folder and run the following command:</p>
 <pre><code>mvn integration-test -Pamp-to-war</code></pre>
 <p>This will build an <a href="https://wiki.alfresco.com/wiki/AMP_Files">AMP file</a>, then apply the amp to the Share war-file and startup an embedded Tomcat instance. Normally Tomcat will run on the default port 8080, but for since Alfresco is already running on that port, we need to change this. This can be done either by giving the port number as an argument to Maven, or defined in the <code>pom.xml</code> as the example in this tutorial.</p>
 <p>The Tomcat port number is defined in <code>pom.xml</code> with the following XML:</p>
@@ -158,16 +162,16 @@
 <p>This chapter will focus on how to create a custom page in Share with a single web script, go through the JSON model that is used to setup the widgets on the page.</p>
 <h2 id="create-the-page">Create the page</h2>
 <p>Let's create a page named &quot;Simple page&quot;, with a &quot;Hello World&quot; button. Create a new web script &quot;simple-page&quot;, like this:</p>
-<p><strong>simple-page.get.desc.xml</strong></p>
+<p><code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/simple-page.get.desc.xml</code></p>
 <pre><code>&lt;webscript&gt;
     &lt;shortname&gt;Simple Page&lt;/shortname&gt;
     &lt;description&gt;Simple page definition&lt;/description&gt;
     &lt;family&gt;Share&lt;/family&gt;
     &lt;url&gt;/simple-page&lt;/url&gt;
 &lt;/webscript&gt;   </code></pre>
-<p><strong>simple-page.get.html.ftl</strong></p>
+<p><code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/simple-page.get.html.ftl</code></p>
 <pre><code>&lt;@processJsonModel group=&quot;share&quot;/&gt;</code></pre>
-<p><strong>simple-page.get.js</strong></p>
+<p><code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/simple-page.get.js</code></p>
 <pre><code>model.jsonModel = {
     widgets: [{
         name: &quot;alfresco/buttons/AlfButton&quot;,
@@ -176,7 +180,6 @@
         }
     }]
 };</code></pre>
-<p>Place these three files in <code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages</code></p>
 <p>Start up Share via Maven with this command:</p>
 <pre><code>mvn integration-test -Pamp-to-war</code></pre>
 <p>Navigate to <code>http://localhost:8081/share/page/dp/ws/simple-page</code> to see the result, which looks like this:</p>

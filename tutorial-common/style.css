@@ -127,7 +127,7 @@ DESCRIPTION: One centered column with no sidebar
 
 .one-column #content {
 	margin: 0 auto;
-	width: 640px;
+	width: 710px;
 }
 
 /*
@@ -522,7 +522,8 @@ div.menu li {
 	line-height: 21px;
 }
 #content code {
-	font-size: 13px;
+	font-size: 12px;
+    background-color: #F7F7F7;
 }
 #content dt,
 #content th {
@@ -1532,4 +1533,8 @@ code {
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
+}
+
+.figure img{
+    width: 700px;
 }

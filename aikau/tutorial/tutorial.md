@@ -5,7 +5,6 @@
 # License
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.
-
 ![License](images/creativecommons-cc-by-sa.png)
 
 
@@ -47,15 +46,12 @@ To make sure everyone can understand and relate to the code in this tutorial, he
 
 The Maven SDK will provide us with the initial directory structure, which contains some sample data. For all examples in this tutorial the sample data has been removed, and the `src/main/amp/config/alfresco/web-extension` folder has been added, as well as the `src/main/amp/file-mapping.properties` file.
 
-The skeleton looks like this:
-
-![File structure](images/file-structure.png)
-
 Here are some notes on what goes where
 
 File | Description
 ---- | -----------
 `src/main/amp/config/alfresco/web-extension` | share-config-custom.xml, and other customization XML-files
+`src/main/amp/config/alfresco/web-extension/site-webscripts`| Web scripts
 `src/main/amp/web` | Static assets, Javascript, CSS, Images etc.
 `src/main/java` | Java classes
 `src/test` | Test resources, Unit tests etc
@@ -114,7 +110,7 @@ Let's create a page named "Simple page", with a "Hello World" button. Create a n
 	    }]
 	};
 
-Place these three files in `src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages`.
+Place these three files in `src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages`
 
 Start up Share via Maven with this command:
 
@@ -148,6 +144,7 @@ The second part "ws" means that we want to load the page from a web script. It's
 To add the Share header and footer simply switch the "dp" with "hdp": `http://localhost:8081/share/page/hdp/ws/simple-page`
 
 The result looks like this:
+
 ![Simple page with a widget rendered with header and footer](images/part-one-simple-page-2.png)
 
 
@@ -175,6 +172,7 @@ To add the title to our simple page, modify the JSON model and add the title:
 	};
 
 After restarting Share, the result looks like this:
+
 ![Simple page with a widget and title](images/part-one-simple-page-3.png)
 
 ### Adding a layout
@@ -217,6 +215,7 @@ The JSON model in `src/main/amp/config/alfresco/web-extension/site-webscripts/co
 
 
 The result looks like this:
+
 ![Simple page two widgets in a horizontal layout](images/part-one-simple-page-4.png)
 
 Notice how the widgets are nested inside each other. The `HorizontalWidgets` has a config object with a list of widgets with their own properties. The configuration includes a parameter for the horizontal widget `widgetWidth: 50` which defines the percentage width each widget should recieve.
@@ -275,7 +274,7 @@ First we need to create the widget. Create this file `src/main/amp/web/js/exampl
 
 Once the widget is created, create a new web script to define the new page:
 
-`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/custom-widget-page.get.desc.xml`:
+`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/custom-widget-page.get.desc.xml`
 
 	<webscript>
 	    <shortname>Custom Widget Page</shortname>
@@ -285,12 +284,12 @@ Once the widget is created, create a new web script to define the new page:
 	</webscript>
 
 Add a Freemarker template to render the page:
-`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/custom-widget-page.get.html.ftl`:
+`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/custom-widget-page.get.html.ftl`
 
 	<@processJsonModel group="share"/>
 
 Add the JSON file:
-`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/custom-widget-page.get.js`:
+`src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/custom-widget-page.get.js`
 
 	model.jsonModel = {
 	    widgets: [{
@@ -305,7 +304,7 @@ Add the JSON file:
 	    }]
 	};
 
-The last thing that needs to be done is to tell Share about the path for the widget, otherwise it will not know where to look for it. This is done by creating an extension module for Share. Create the module in this file `src/main/amp/config/alfresco/web-extension/site-data/extensions/widget-extension.xml`:
+The last thing that needs to be done is to tell Share about the path for the widget, otherwise it will not know where to look for it. This is done by creating an extension module for Share. Create the module in this file `src/main/amp/config/alfresco/web-extension/site-data/extensions/widget-extension.xml`
 
 	<extension>
 	  <modules>
@@ -437,7 +436,7 @@ Let's look at an example. Create a new file in `src/main/amp/web/js/example/widg
 
 	<div class="my-template-widget">${greeting}</div>
 
-Then a new widget in `src/main/amp/web/js/example/widgets/TemplateWidget.js`:
+Then a new widget in `src/main/amp/web/js/example/widgets/TemplateWidget.js`
 
 	define(["dojo/_base/declare",
 	        "dijit/_WidgetBase",
@@ -469,7 +468,7 @@ Let's move our greeting into the properties file:
 
 All that's left to do now, is to load up the i18n file by setting the `i18nRequirements` property and call `this.message()` to grab the label out of the translation system. Everything else is taken care of by the Aikau framework.
 
-With the translations done, let's add a CSS file `src/main/amp/web/js/example/widgets/css/TemplateWidget.css`:
+With the translations done, let's add a CSS file `src/main/amp/web/js/example/widgets/css/TemplateWidget.css`
 
 	.my-template-widget {
 	    border: 1px #000000 solid;
@@ -717,6 +716,7 @@ Create a new web script `ajax-page` that defines a page with the widget:
 	};
 
 The end result looks like this:
+
 ![Ajax example widget](images/part-two-advanced-page.png)
 
 If we break it down a bit, there really is not much to it. We pull in the dependencies we need: `CoreXhr`, `dom-construct`, `array` and `TemplatedMixin`. We also specify the template, css and i18n files.
@@ -949,6 +949,7 @@ The widget itself is also easy, it pulls in TopicsMixin, setup the template with
 
 
 For the final result, access the page on [http://localhost:8081/share/page/hdp/ws/pub-sub-example](http://localhost:8081/share/page/hdp/ws/pub-sub-example). There will be a textarea and a publish button. Enter something into the textarea, click the publish button, and the result will be rendered on the right side of the page:
+
 ![Basic Pub/Sub example](images/part-two-pub-sub.png)
 
 
@@ -956,7 +957,8 @@ For the final result, access the page on [http://localhost:8081/share/page/hdp/w
 
 Now that we know a lot more about how to build pages and utilize the Aikau framework, let's back up and think about the JSON page definition. It's nice that we can define new pages, but what happens once Alfresco starts to really work the Aikau framework into Share? We still want to be able to extend it.
 
-As of 4.2.f, the only component that uses Aikau is the header. Now, what is the header component exactly? 
+As of 4.2.f, the only component that uses Aikau is the header. Now, what is the header component exactly?
+ 
 ![Share 4.2 Header](images/part-three-header-1.png)
 
 The header component consists of the black top menu and the logo/title/buttons below it. It's defined in `WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/header/share-header.get.js`. This file is pretty simple, it includes `WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/imports/share-header.lib.js` which is where all the magic happens.
@@ -1112,6 +1114,7 @@ Let's remove the "Shared files" in the header:
     findAndRemoveIn(model.jsonModel.widgets, null, null, "HEADER_SHARED_FILES");
 
 Combining all the examples, it will look like this:
+
 ![Header customizations](images/part-three-header-2.png)
 
 # Closing thoughts

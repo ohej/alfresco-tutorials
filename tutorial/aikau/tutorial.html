@@ -66,13 +66,13 @@
 <li><a href="#defining-and-declaring-a-widget">Defining and declaring a widget</a></li>
 </ul></li>
 <li><a href="#beyond-a-hello-world">Beyond a &quot;Hello world&quot;</a><ul>
-<li><a href="#templates-css-and-i18n">Templates, CSS and I18N</a></li>
+<li><a href="#templates-css-and-i18n">Templates, CSS, and I18N</a></li>
 <li><a href="#ajax">Ajax</a></li>
 <li><a href="#dom-helpers-and-modules">DOM helpers and modules</a></li>
 </ul></li>
 <li><a href="#bringing-it-all-together">Bringing it all together</a></li>
 <li><a href="#inter-widget-communication">Inter-widget communication</a><ul>
-<li><a href="#a-basic-pubsub-example">A basic Pub/Sub example</a></li>
+<li><a href="#a-basic-pubsub-example">A basic pub/sub example</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#part-three-extending-json-models">Part Three: Extending JSON models</a><ul>
@@ -89,8 +89,8 @@
 <h1 id="license">License</h1>
 <p>This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/. <img src="images/creativecommons-cc-by-sa.png" alt="License" /></p>
 <h1 id="introduction">Introduction</h1>
-<p>Alfresco Share is a great front end for the Alfresco Repository. Out of the box it comes with full collaboration features, content management and pretty much what you would expect for a full blown Enterprise Content Management System.</p>
-<p>Different users have different needs. Sometimes you'll want to add a few buttons, create a theme, but from time to time developers need to make significant user interface customizations to meet business requirements. Up until recent releases this would prove to be a challenge, and many developers chose to go down a different path and write a UI from scratch using a framework and language of their choosing. The new page and widget framework (Aikau) in Share provides a great way to do a complete custom interface, but keeps the code - and the users, within Share.</p>
+<p>Alfresco Share is a great front end for the Alfresco Repository. Out of the box it comes with full collaboration features, content management, and pretty much what you would expect for a full blown Enterprise Content Management System.</p>
+<p>Different users have different needs. Sometimes you'll want to add a few buttons and create a theme, but from time to time developers need to make significant user interface customizations to meet business requirements. Up until recent releases this would prove to be a challenge, and many developers chose to go down a different path and write a UI from scratch using a framework and language of their choosing. The new page and widget framework (Aikau) in Share provides a great way to create a complete custom interface, but keeps the code - and the users, within Share.</p>
 <p>This tutorial assumes knowledge of the Alfresco Maven SDK, or an existing development setup. All examples in this tutorial are available with full source which can be built with Maven.</p>
 <p>For a full tutorial on how to work with the Maven SDK, please see <a href="http://ecmarchitect.com/alfresco-developer-series-tutorials/maven-sdk/tutorial/tutorial.html">Jeff Potts' excellent tutorial on the subject</a>.</p>
 <h2 id="credits">Credits</h2>
@@ -98,13 +98,13 @@
 <ul>
 <li><a href="http://ecmarchitect.com">Jeff Potts</a>, for his encouragement and seal of approval</li>
 <li>Lanre Abiwon (DarkStar1), for going through the early drafts and contributions</li>
-<li><a href="http://magenta.dk">Magenta Aps</a>, for allowing me to spend a bit of time at work on this article</li>
+<li><a href="http://magenta.dk">Magenta Aps</a>, for allowing me to spend a bit of time, at work, on this article</li>
 </ul>
 <p>And of course all of the members of the Alfresco Community!</p>
 <h1 id="setup">Setup</h1>
 <p>To make sure everyone can understand and relate to the code in this tutorial, here is a description of the tools used for building these examples, and the file structure within the examples.</p>
 <h2 id="tools">Tools</h2>
-<p>While wirting this tutorial the following tools have been used:</p>
+<p>While writing this tutorial the following tools have been used:</p>
 <ul>
 <li>Mac OS X 10.9.1</li>
 <li>Maven 3.1.1 (Installed with <a href="http://brew.sh/">Homebrew</a>)</li>
@@ -116,7 +116,7 @@
 <p>All examples in this tutorial are available on <a href="https://github.com/ohej/alfresco-tutorials">GitHub</a>.</p>
 <h2 id="file-structure">File structure</h2>
 <p>The Maven SDK will provide us with the initial directory structure, which contains some sample data. For all examples in this tutorial the sample data has been removed, and the <code>src/main/amp/config/alfresco/web-extension</code> folder has been added, as well as the <code>src/main/amp/file-mapping.properties</code> file.</p>
-<p>Here are some notes on what goes where</p>
+<p>Here are some notes on what goes where:</p>
 <table>
 <thead>
 <tr class="header">
@@ -127,7 +127,7 @@
 <tbody>
 <tr class="odd">
 <td align="left"><code>src/main/amp/config/alfresco/web-extension</code></td>
-<td align="left">share-config-custom.xml, and other customization XML-files</td>
+<td align="left">share-config-custom.xml and other customization XML-files</td>
 </tr>
 <tr class="even">
 <td align="left"><code>src/main/amp/config/alfresco/web-extension/site-webscripts</code></td>
@@ -135,7 +135,7 @@
 </tr>
 <tr class="odd">
 <td align="left"><code>src/main/amp/web</code></td>
-<td align="left">Static assets, Javascript, CSS, Images etc.</td>
+<td align="left">Static assets, Javascript, CSS, Images etc</td>
 </tr>
 <tr class="even">
 <td align="left"><code>src/main/java</code></td>
@@ -150,16 +150,16 @@
 <h2 id="running-the-examples">Running the examples</h2>
 <p>Clone the code from <a href="https://github.com/ohej/alfresco-tutorials">GitHub</a>, make sure you have an Alfresco instance running on port 8080, enter the <code>aikau/aikau-tutorial-share/</code> folder and run the following command:</p>
 <pre><code>mvn integration-test -Pamp-to-war</code></pre>
-<p>This will build an <a href="https://wiki.alfresco.com/wiki/AMP_Files">AMP file</a>, then apply the amp to the Share war-file and startup an embedded Tomcat instance. Normally Tomcat will run on the default port 8080, but for since Alfresco is already running on that port, we need to change this. This can be done either by giving the port number as an argument to Maven, or defined in the <code>pom.xml</code> as the example in this tutorial.</p>
+<p>This will build an <a href="https://wiki.alfresco.com/wiki/AMP_Files">AMP file</a>, then apply the amp to the Share war-file, and startup an embedded Tomcat instance. Normally, Tomcat will run on the default port 8080, but since Alfresco is already running on that port, we need to change this. This can be done either by giving the port number as an argument to Maven, or defined in the <code>pom.xml</code> as the example in this tutorial.</p>
 <p>The Tomcat port number is defined in <code>pom.xml</code> with the following XML:</p>
 <pre><code>&lt;maven.tomcat.port&gt;8081&lt;/maven.tomcat.port&gt;</code></pre>
 <p>With this in place, Tomcat will run on port 8081.</p>
-<p>Once Tomcat has started Share is is accessible on <a href="http://localhost:8081/share">http://localhost:8081/share</a></p>
+<p>Once Tomcat has started Share is accessible on <a href="http://localhost:8081/share">http://localhost:8081/share</a>.</p>
 <p>To shut down it down, simply hit CTRL+C.</p>
 <h1 id="part-one-creating-a-page">Part One: Creating a page</h1>
-<p>Share is a great frontend for Alfresco, but sometimes it doesn't meet a specific business requirement. A common use case is the need for a complete separate page display custom metadata on a set of nodes, where the built in search or repository browser isn't enough. Many people end up wirting separate applications outside Share to meet these requirements, because there is a lot of work involved in making a custom page in Share.</p>
-<p>If you worked with Share in the past, you may be familiar with the Surf Framework. Defining a page using Surf requires template instances, regions, and components. Using the new widget framework, a single web script defines a page. This makes it much easier to develop custom pages that meets all business requirements, while still keeping the users inside the Share application.</p>
-<p>This chapter will focus on how to create a custom page in Share with a single web script, go through the JSON model that is used to setup the widgets on the page.</p>
+<p>Share is a great frontend for Alfresco, but sometimes it doesn't meet a specific business requirement. A common use case is the need for a completely separate page to display custom metadata on a set of nodes, where the built in search or repository browser isn't enough. Many people end up writing separate applications outside Share to meet these requirements, because there is a lot of work involved in making a custom page in Share.</p>
+<p>If you have worked with Share in the past, you may be familiar with the Surf Framework. Defining a page using Surf requires template instances, regions, and components. Using the new widget framework, a single web script defines a page. This makes it much easier to develop custom pages that meets all business requirements, while still keeping the users inside the Share application.</p>
+<p>This chapter will focus on how to create a custom page in Share with a single web script and go through the JSON model that is used to setup the widgets on the page.</p>
 <h2 id="create-the-page">Create the page</h2>
 <p>Let's create a page named &quot;Simple page&quot;, with a &quot;Hello World&quot; button. Create a new web script &quot;simple-page&quot;, like this:</p>
 <p><code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/simple-page.get.desc.xml</code></p>
@@ -188,21 +188,21 @@
 </div>
 <h3 id="a-closer-look">A closer look</h3>
 <p>The example above is the basic setup of a page with the new page model. Let's review what we just did.</p>
-<p>The web script defines a JSON model for a page. The JSON model consists of widgets with a configuration. In this example we defined a single button-widget with a simple configuration which defines the label of the button.</p>
-<p>Widgets can be nested (if the widget supports it). This could be used to define the overall layout of the page, or a simple widget to split widgets up into columns. Share provides a number of layout widgets, for example sidebar container, left-and-right, tabs, vertical/horizontal etc. Since there is yet to be proper documentation on this, all widgets can be found in <a href="https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/COMMUNITYTAGS/V4.2f/root/projects/slingshot/source/web/js/alfresco/">the source for Share</a>.</p>
-<p>The freemarker template is really simple, it calls the <code>@processJsonModel</code> macro, which takes care of rendering everything.</p>
+<p>The web script defines a JSON model for a page. The JSON model consists of widgets, and their configuration. In this example we defined a single button-widget with a simple configuration which defines the label of the button.</p>
+<p>Widgets can be nested (if the widget supports it). This could be used to define the overall layout of the page, or define a simple widget to split widgets up into columns. Share provides a number of layout widgets, for example, sidebar container, left-and-right, tabs, vertical/horizontal etc. Since there is yet to be proper documentation on this, all widgets can be found in <a href="https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/COMMUNITYTAGS/V4.2f/root/projects/slingshot/source/web/js/alfresco/">the source for Share</a>.</p>
+<p>The freemarker template is really simple. It calls the <code>@processJsonModel</code> macro, which takes care of rendering everything.</p>
 <h2 id="where-is-the-share-header-and-footer">Where is the Share header and footer?</h2>
-<p>After seeing the first example, the obvious question would be how to add the Share header and footer. Luckily this is not something you need to define manually.</p>
+<p>After seeing the first example, the obvious question is how to add the Share header and footer. Luckily, this is not something you need to define manually.</p>
 <p>Share enables you to render pages in different contexts, which means the URL will determine how the page is rendered. Notice the URL <code>http://localhost:8081/share/page/dp/ws/simple-page</code>. Notice <code>/dp/ws/simple-page</code>.</p>
-<p>The first part &quot;dp&quot; defines that we want a dynamic page. This will render the page in a stand-alone manner, useful for embedding the page into other applications, or creating a complete custom interface for specific needs but still in the Alfresco/Share ecosystem.</p>
-<p>The second part &quot;ws&quot; means that we want to load the page from a web script. It's possible to remote load the pages from the repository, that way we can create pages and store them within Alfresco and have them rendered.</p>
+<p>The first part, &quot;dp&quot;, defines that we want a dynamic page. This will render the page in a stand-alone manner, useful for embedding the page into other applications, or creating a complete custom interface for specific needs but, still in the Alfresco/Share ecosystem.</p>
+<p>The second part, &quot;ws&quot;, means that we want to load the page from a web script. It's possible to remotely load the pages from the repository. That way we can create pages and store them within Alfresco and have them rendered.</p>
 <p>To add the Share header and footer simply switch the &quot;dp&quot; with &quot;hdp&quot;: <code>http://localhost:8081/share/page/hdp/ws/simple-page</code></p>
 <p>The result looks like this:</p>
 <div class="figure">
 <img src="images/part-one-simple-page-2.png" alt="Simple page with a widget rendered with header and footer" /><p class="caption">Simple page with a widget rendered with header and footer</p>
 </div>
 <h3 id="adding-a-title-next-to-the-logo">Adding a title next to the logo</h3>
-<p>The Share header widget is currently (as of 4.2.f) the only component in Share using the new Aikau framework. The header includes the menu bar, search, logo and title. If we wish to add a title next to the logo, we'll need to define a title widget, which Share will take into account when rendering it with the header. If the page is rendered without the header, it simply ignores the widget.</p>
+<p>The Share header widget is currently (as of 4.2.f) the only component in Share using the new Aikau framework. The header includes the menu bar, search, logo, and title. If we wish to add a title next to the logo, we'll need to define a title widget, which Share will take into account when rendering it with the header. If the page is rendered without the header, it simply ignores the widget.</p>
 <p>To add the title to our simple page, modify the JSON model and add the title:</p>
 <pre><code>model.jsonModel = {
     widgets: [{
@@ -260,25 +260,25 @@
 <div class="figure">
 <img src="images/part-one-simple-page-4.png" alt="Simple page two widgets in a horizontal layout" /><p class="caption">Simple page two widgets in a horizontal layout</p>
 </div>
-<p>Notice how the widgets are nested inside each other. The <code>HorizontalWidgets</code> has a config object with a list of widgets with their own properties. The configuration includes a parameter for the horizontal widget <code>widgetWidth: 50</code> which defines the percentage width each widget should recieve.</p>
+<p>Notice how the widgets are nested inside each other. The <code>HorizontalWidgets</code> has a config object with a list of widgets, each with their own peoperties. The configuration includes a parameter for the horizontal widget <code>widgetWidth: 50</code> which defines the percentage width each widget should recieve.</p>
 <h2 id="the-built-in-widgets">The built-in widgets</h2>
-<p>As mentioned above, the only component in Share (as of 4.2.f) using the new Aikau framework is the header. However, this does not mean that we're limited to logo, buttons and drop downs.</p>
-<p>The good folks at Alfresco are working hard on converting the Document Library to use the Aikau framework. This means that there are a lot of widgets in the library that can be use right now.</p>
-<p>Take a look at the <a href="https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/COMMUNITYTAGS/V4.2e/root/projects/slingshot/source/web/js/alfresco/">Share source</a> to see see all the existing widgets.</p>
-<p>There are widgets for loading up nodes, rendering properties, buttons, menus, forms, dialogs, selectors for users, nodes, categories and much, much more.</p>
-<p>Not all widgets are production ready, but they are excellent examples to look at, and to get inspiration from. Use them as a reference on good practises on writing good and generic widgets.</p>
+<p>As mentioned above, the only component in Share (as of 4.2.f) using the new Aikau framework is the header. However, this does not mean that we're limited to logo, buttons, and drop downs.</p>
+<p>The good folks at Alfresco are working hard on converting the Document Library to use the Aikau framework. This means that there is a lot of widgets in the library that can be used right now.</p>
+<p>Take a look at the <a href="https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/COMMUNITYTAGS/V4.2e/root/projects/slingshot/source/web/js/alfresco/">Share source</a> to see all the existing widgets.</p>
+<p>There are widgets for loading up nodes, rendering properties, buttons, menus, forms, dialogs, selectors for users, nodes, categories, and much, much more.</p>
+<p>Not all widgets are production ready, but they are excellent examples to look at, and to get inspiration from. Use them as a reference on good practises on writing good, and generic widgets.</p>
 <h1 id="part-two-introduction-to-widgets">Part Two: Introduction to widgets</h1>
-<p>Using the existing widgets in Share provides a lot of features, but when developing a custom page, custom widgets are usually needed. Also to fully understand, use and extend the existing widgets we need to look at how widgets are created.</p>
-<p>This chapter will focus on how to write widgets and provide examples on how to utilize templates, i18n, css and Ajax.</p>
+<p>Using the existing widgets in Share provides a lot of features, but when developing a custom page, custom widgets are usually needed. To fully understand, use and extend the existing widgets we need to look at how widgets are created.</p>
+<p>This chapter will focus on how to write widgets, and will provide examples on how to utilize templates, i18n, css, and Ajax.</p>
 <h2 id="yui-dojo-and-amd">YUI, Dojo and AMD</h2>
-<p>Up until now, Share has been built on top of the YUI2 framework and almost all of the current features in Share still use YUI2.</p>
-<p>Share will eventually move away from YUI2 as it is not being developed anymore, and there is no clear upgrade path from YUI2 to YUI3, so Alfresco had to make a decision, and chose to go with <a href="http://dojotoolkit.org/documentation/tutorials/1.9/modules/">Dojo's AMD Module system</a>.</p>
-<p>The Aikau framework relies on <a href="http://dojotoolkit.org/documentation/tutorials/1.9/modules/">Dojo's AMD Module system</a>, to provide features for loading and extending widgets.</p>
+<p>Up until now, Share has been built on top of the YUI2 framework, and almost all of the current features in Share still use YUI2.</p>
+<p>Share will eventually move away from YUI2 as it is not being developed anymore, and since there is no clear upgrade path from YUI2 to YUI3, Alfresco had to make a decision and chose to go with <a href="http://dojotoolkit.org/documentation/tutorials/1.9/modules/">Dojo's AMD Module system</a>.</p>
+<p>The Aikau framework relies on <a href="http://dojotoolkit.org/documentation/tutorials/1.9/modules/">Dojo's AMD Module system</a> to provide features for loading and extending widgets.</p>
 <p>This does not mean that Alfresco is switching away from YUI and forcing users into Dojo.</p>
-<p>Most of Share's future core modules will be based on Dojo, but this does not mean developers needs to learn and use Dojo for everything. However a bit of AMD knowledge will be needed, which defines is what defines widget and their dependencies. That's it. Once AMD is in place, it's up to the developers to load up another framework or use vanilla Javascript.</p>
+<p>Most of Share's future core modules will be based on Dojo, but this does not mean developers needs to learn and use Dojo for everything. However a bit of AMD knowledge will be needed, which is what defines widget and their dependencies. That's it. Once AMD is in place, it's up to the developers to load up another framework or use vanilla Javascript.</p>
 <h2 id="creating-a-simple-widget">Creating a simple widget</h2>
 <p>Let's create a really simple widget on a new page. The widget will not do much, other than do an alert with &quot;Hello world&quot;. Let's start out with the code, see that it works and then go into the details.</p>
-<p>First we need to create the widget. Create this file <code>src/main/amp/web/js/example/widgets/MyWidget.js</code></p>
+<p>First we need to create the widget. Create this file: <code>src/main/amp/web/js/example/widgets/MyWidget.js</code></p>
 <pre><code>define([&quot;dojo/_base/declare&quot;,
         &quot;dijit/_WidgetBase&quot;,
         &quot;alfresco/core/Core&quot;
@@ -317,7 +317,7 @@
         name: &quot;example/widgets/MyWidget&quot;
     }]
 };</code></pre>
-<p>The last thing that needs to be done is to tell Share about the path for the widget, otherwise it will not know where to look for it. This is done by creating an extension module for Share. Create the module in this file <code>src/main/amp/config/alfresco/web-extension/site-data/extensions/widget-extension.xml</code></p>
+<p>The last thing that needs to be done is to tell Share about the path for the widget, otherwise it will not know where to look for it. This is done by creating an extension module for Share. Create the module in this file: <code>src/main/amp/config/alfresco/web-extension/site-data/extensions/widget-extension.xml</code></p>
 <pre><code>&lt;extension&gt;
   &lt;modules&gt;
     &lt;module&gt;
@@ -340,10 +340,10 @@
 &lt;/extension&gt;</code></pre>
 <p>Restart share and visit <a href="http://localhost:8081/share/page/dp/ws/custom-widget-page">http://localhost:8081/share/page/dp/ws/simple-page</a> to see the result.</p>
 <h2 id="breaking-down-the-widget-code">Breaking down the widget code</h2>
-<p>A lot of code was involved in creating the widget. We had to create a new web script, an extension module and the widget. Let's look at each part to understand what's going on.</p>
+<p>A lot of code was involved in creating the widget. We had to create a new web script, an extension module, and the widget. Let's look at each part to understand what's going on.</p>
 <h3 id="loading-dependencies">Loading dependencies</h3>
-<p>If you have worked with Javascript in general, you'll notice a few things. We haven't included any Javascript files and there is no initialization of the widget object. This is because everything is handled by the Surf framework which powers Share. By defining our extension module, we told Share where to find the javascript files, and by defining our widget in the JSON model it knows how to initialize it.</p>
-<p>When processing the JSON page model, Share will identify which widgets needs to be included to render the page. It knows by the name attribute roughly where to look for it, but we didn't specify any extension to the file, or absolute path.</p>
+<p>If you have worked with Javascript in general, you'll notice a few things. We haven't included any Javascript files and there is no initialization of the widget object. This is because everything is handled by the Surf framework which powers Share. By defining our extension module, we told Share where to find the javascript files, and by defining our widget in the JSON model, it knows how to initialize it.</p>
+<p>When processing the JSON page model, Share will identify which widgets need to be included to render the page. It knows by the name attribute roughly where to look for it, but we didn't specify an absolute path or an extension to the file.</p>
 <p>Share registers a list of packages to include - a kind of namespace. This is done in <code>WEB-INF/surf.xml</code> with this sniplet of XML:</p>
 <pre><code>&lt;packages&gt;
     &lt;package name=&quot;dojo&quot; location=&quot;js/lib/dojo-1.9.0/dojo&quot;/&gt;
@@ -353,8 +353,8 @@
 &lt;/packages&gt;
         </code></pre>
 <p>The packages has a name and a location. So by referencing <code>alfresco/[folder]/[widget]</code> in the JSON model, Share will look for the file in <code>WEB-INF/js/alfresco/[folder]/[widget].js</code>.</p>
-<p>However it is always good practise to create a custom namespace to avoid conflicts in the code, so we added a new package in the extension module, which tells Share that when referencing <code>example/[folder]/[widget]</code> it will include <code>WEB-INF/js/example/[folder]/[widget].js</code>.</p>
-<p>Now Share knows how to locate the widget files, it will run it through it's internal dependency aggregation and caching. Our widget might depend on other widgets, and those widgets might depend on other widgets. This will create a complex matrix of dependencies to load, but Surf is smart enough to only include the dependencies we need - and it will only include them once.</p>
+<p>However, it is always good practise to create a custom namespace to avoid conflicts in the code. To do this, we added a new package in the extension module, which tells Share that when referencing <code>example/[folder]/[widget]</code> it will include <code>WEB-INF/js/example/[folder]/[widget].js</code>.</p>
+<p>Now that Share knows how to locate the widget files, it will run it through it's internal dependency aggregation and caching. Our widget might depend on other widgets, and those widgets might depend on other widgets. This will create a complex matrix of dependencies to load, but Surf is smart enough to only include the dependencies we need - and it will only include them once.</p>
 <p>The <code>&lt;@processJsonModel group=&quot;share&quot;/&gt;</code> macro in the Freemarker template triggers the process of resolving the dependencies and rendering everything from including the scripts to the initialization of the widget.</p>
 <h3 id="defining-and-declaring-a-widget">Defining and declaring a widget</h3>
 <p>This is not an Alfresco specific thing - it's purely Dojo and AMD. Since Surf already pre-processed and initialized our widget, Share will already have taken care of loading all the resources we need. One less thing to worry about!</p>
@@ -372,10 +372,10 @@
 }</code></pre>
 <p>This might be a bit complex to read and understand, so let's spend some more time on it.</p>
 <p>We create a function, which will take &quot;declare&quot;, &quot;_Widget&quot; and &quot;Core&quot; as arguments. The order of the arguments has to be the exact same as the definitions above, as they will be passed into this function.</p>
-<p>So first we define our dependencies, then create a function which takes these dependencies in as arguments.</p>
-<p>Inside this function, we call <a href="http://dojotoolkit.org/documentation/tutorials/1.9/declare/">the declare function, which is an AMD specific function</a>. The declare function allows us to inherit and extend other AMD modules, so in our case we extend the Dojo _WidgetBase and Alfresco's Core module.</p>
-<p>This will provide us with the basic framework, after that we can start defining our widget object.</p>
-<p>So if we wanted to extend <code>alfresco/buttons/AlfButton</code> we would simply define the module and add it to the list of modules we extend like this:</p>
+<p>So, first we define our dependencies, then create a function which takes these dependencies in as arguments.</p>
+<p>Inside this function, we call <a href="http://dojotoolkit.org/documentation/tutorials/1.9/declare/">the declare function, which is an AMD specific function</a>. The declare function allows us to inherit and extend other AMD modules. In our case we extend the Dojo _WidgetBase and Alfresco's Core module.</p>
+<p>This will provide us with the basic framework, and after that we can start defining our widget object.</p>
+<p>So if we wanted to extend <code>alfresco/buttons/AlfButton</code>, we would simply define the module, and add it to the list of modules, it can be extended like this:</p>
 <pre><code>define([&quot;dojo/_base/declare&quot;,
         &quot;dijit/_WidgetBase&quot;,
         &quot;alfresco/core/Core&quot;,
@@ -388,7 +388,7 @@
     }
 }); </code></pre>
 <p>This way we can extend the standard button and modify it.</p>
-<p>Notice that the function definition and return statements are two different, separate things. The function arguments, are the dependencies we request with the define statement. The <code>return declare([])</code> defines which objects we want to extend. We do not always want to extend other objects, but only make them available in in the object. One example of this could be if we wanted Dojo's array features. We would define them as a dependency, make them available in the function, but we <em>do not</em> want to extend the object. This example shows how to include the array features:</p>
+<p>Notice that the function definition and return statements are two different, separate things. The function arguments are the dependencies, we request with the define statement. The <code>return declare([])</code> defines which objects we want to extend. We do not always want to extend other objects, but only make them available in the object. One example of this could be if we wanted Dojo's array features. We would define them as a dependency, and make them available in the function, but we <em>do not</em> want to extend the object. This example shows how to include the array features:</p>
 <pre><code>define([&quot;dojo/_base/declare&quot;,
         &quot;dijit/_WidgetBase&quot;,
         &quot;alfresco/core/Core&quot;,
@@ -403,12 +403,12 @@
         });
     }
 }); </code></pre>
-<p>Notice that <code>dojo/_base/array</code> was only defined and passed in as an argument to our widget, we did not extend the array object.</p>
+<p>Notice that <code>dojo/_base/array</code> was only defined and passed in as an argument to our widget. We did not extend the array object.</p>
 <h2 id="beyond-a-hello-world">Beyond a &quot;Hello world&quot;</h2>
-<p>Now that we know a lot more about how a widget is written, let's look at a some more examples. This example will feature the <code>Templated</code> module, which enables you to specify a HTML template for your widget, bind values to it and access it from within the widget. We'll also have a look at the basic DOM-operations Dojo supplies. Last but not least, we'll look at the <code>CoreXhr</code> module for doing Ajax as well as utilizing i18n and CSS.</p>
-<h3 id="templates-css-and-i18n">Templates, CSS and I18N</h3>
+<p>Now that we know a lot more about how a widget is written, let's look at some more examples. This example will feature the <code>Templated</code> module, which enables you to specify a HTML template for your widget, bind values to it, and access it from within the widget. We'll also have a look at the basic DOM-operations Dojo supplies. Last but not least, we'll look at the <code>CoreXhr</code> module for doing Ajax as well as utilizing i18n and CSS.</p>
+<h3 id="templates-css-and-i18n">Templates, CSS, and I18N</h3>
 <p>Dojo provides a template system for widgets, called <a href="http://dojotoolkit.org/documentation/tutorials/1.9/templated/">Templated</a>. This module will allow us to create HTML templates and manipulate them. We'll be able to bind events and elements directly to our widget for future reference. This way we can create the basic structure directly in HTML and hook into it from our widget.</p>
-<p>To use the <code>Templated</code> module, the widget need to define the <code>dijit/_TemplatedMixin</code> module, and specify a path and name for the template, like this: <code>dojo/text!./templates/TemplateWidget.html</code>. The path is relative to the widget's location. The widget also need to extend the <code>Templated</code> module with the declare feature discussed earlier.</p>
+<p>To use the <code>Templated</code> module, the widget need to define the <code>dijit/_TemplatedMixin</code> module, and specify a path and name for the template, like this: <code>dojo/text!./templates/TemplateWidget.html</code>. The path is relative to the widget's location. The widget also needs to extend the <code>Templated</code> module with the declare feature discussed earlier.</p>
 <p>Let's look at an example. Create a new file in <code>src/main/amp/web/js/example/widgets/templates/TemplateWidget.html</code> with some HTML:</p>
 <pre><code>&lt;div class=&quot;my-template-widget&quot;&gt;${greeting}&lt;/div&gt;</code></pre>
 <p>Then a new widget in <code>src/main/amp/web/js/example/widgets/TemplateWidget.js</code></p>
@@ -427,10 +427,10 @@
             }
         });
 });</code></pre>
-<p>This widget will render the template, and replace the variable with the string &quot;Hello&quot;. Notice that we're overriding the buildRendering method from the Templated module. This method is in charge of rendering the template and setting up the DOM correctly, so it's important to call the original method to ensure everything will work out, this is done by calling <code>this.inherited(arguments)</code>.</p>
+<p>This widget will render the template, and replace the variable with the string &quot;Hello&quot;. Notice that we're overriding the buildRendering method from the Templated module. This method is in charge of rendering the template and setting up the DOM correctly, so it's important to call the original method to ensure that everything will work out. This is done by calling <code>this.inherited(arguments)</code>.</p>
 <p>The Templated module also takes care of binding together the variables, so once a variable has been defined in the template, like this <code>${greeting}</code>, it can accessed and modified directly in the widget within the buildRendering method. This is useful for setting up labels and headings with translations. Notice that the variables can only be modified from the buildRendering method.</p>
-<p>This was a basic example of using the Templated module, we'll see more of this later. Let's add i18n and load a CSS file.</p>
-<p>i18n works exactly like you'd expect, you create properties files like you do for web scripts. Create the i18n file <code>src/main/amp/web/js/example/widgets/templates/i18n/TemplateWidget.properties</code>. Multiple languages can be supported by adding a prefix to the filename, like <code>TemplateWidget_en.properties</code>.</p>
+<p>This was a basic example of using the Templated module. We'll see more of this later. Let's add i18n and load a CSS file.</p>
+<p>i18n works exactly like you'd expect. We create properties files like you do for web scripts. Create the i18n file <code>src/main/amp/web/js/example/widgets/templates/i18n/TemplateWidget.properties</code>. Multiple languages can be supported by adding a prefix to the filename, like <code>TemplateWidget_en.properties</code>.</p>
 <p>Let's move our greeting into the properties file:</p>
 <pre><code>hello-label=Hello from i18n</code></pre>
 <p>All that's left to do now, is to load up the i18n file by setting the <code>i18nRequirements</code> property and call <code>this.message()</code> to grab the label out of the translation system. Everything else is taken care of by the Aikau framework.</p>
@@ -477,7 +477,7 @@
 };</code></pre>
 <p>Restart Share, and access <a href="http://localhost:8081/share/page/hdp/ws/custom-widget-page">http://localhost:8081/share/page/hdp/ws/custom-widget-page</a> to see the result.</p>
 <h3 id="ajax">Ajax</h3>
-<p>Alfresco provides a CoreXhr module, which enables us to do Ajax calls. This module is fairly easy to use. We simply define <code>alfresco/core/CoreXhr</code> as a dependency and extend it, and then we can call <code>this.serviceXhr</code> to do GET/POST/PUT/DELETE operations against Alfresco. The serviceXhr method takes an object of parameters with parameters like, URL, method (GET/POST etc), and callback methods for success/failure.</p>
+<p>Alfresco provides a CoreXhr module, which enables us to do Ajax calls. This module is fairly easy to use. We simply define <code>alfresco/core/CoreXhr</code> as a dependency and extend it, and then we can call <code>this.serviceXhr</code> to do GET/POST/PUT/DELETE operations against Alfresco. The serviceXhr method takes an object of parameters with parameters like URL, method (GET/POST etc), and callback methods for success/failure.</p>
 <p>Here is an example on how to use the <code>CoreXhr</code> module:</p>
 <pre><code>define([&quot;dojo/_base/declare&quot;,
         &quot;dijit/_WidgetBase&quot;,
@@ -501,7 +501,7 @@
                     
         });
 });</code></pre>
-<p>If we want to do a POST operation, we usually want to provide some data to go along with it, the object we pass to the serviceXhr method takes in a few parameters, so we add a <code>data</code> value in the object with our data for the POST operation. Unfortunately there is not much (if any) documentation on this just yet, but by looking at the code the default options we can modify look like this:</p>
+<p>If we want to do a POST operation, we usually want to provide some data to go along with it. The object we pass to the serviceXhr method takes in a few parameters, so we add a <code>data</code> value in the object with our data for the POST operation. Unfortunately there is not much (if any) documentation on this just yet, but by looking at the code, the default options we can modify, look like this:</p>
 <pre><code>var config = {
   handleAs: &quot;text&quot;,
   method: &quot;POST&quot;,
@@ -516,11 +516,11 @@
   progressCallback: defaultProgressCallback,
   alfTopic: null
 };</code></pre>
-<p>The callbacks will get two arguments, the response and the config used for the request.</p>
+<p>The callbacks will get two arguments: the response and the config object used for the request.</p>
 <h3 id="dom-helpers-and-modules">DOM helpers and modules</h3>
-<p>Since this article is not about Dojo, we won't go too much in depth with this subject. Dojo comes with modules for manipulating DOM, which we will see in the later examples by using <code>domConstruct</code> to create DOM nodes and attach them with attach points in our template.</p>
+<p>Since this article is not about Dojo, we won't go in too much detail with this subject. Dojo comes with modules for manipulating DOM, which we will see in the later examples by using <code>domConstruct</code> to create DOM nodes and attach them with attach points in our template.</p>
 <p><code>domConstruct</code> enables us to create DOM nodes, and if we want, we can easily inject them into our templates with <a href="http://dojotoolkit.org/reference-guide/1.9/dijit/_WidgetsInTemplateMixin.html#data-dojo-attach-point">attach points</a>.</p>
-<p>Attach points links nodes from our template into our widget, so we do not have to do queries for the nodes. Attach points is defined by setting a data attribute on the element we wish to attach to our widget and after that we can access the DOM node directly like this <code>this.containerNode</code>. The template would look like this:</p>
+<p>Attach points link nodes from our template into our widget, so we do not have to do queries for the nodes. Attach points are defined by setting a data attribute on the element we wish to attach to our widget, and after that we can access the DOM node directly like this <code>this.containerNode</code>. The template would look like this:</p>
 <pre><code>&lt;div data-dojo-attach-point=&quot;containerNode&quot;&gt;&lt;/div&gt;</code></pre>
 <p>Here is an example on how to use <code>domConstruct</code> to create a new node inside <code>containerNode</code> with a text:</p>
 <pre><code>define([&quot;dojo/_base/declare&quot;,
@@ -539,7 +539,7 @@
             }
         });
 });</code></pre>
-<p>To get a full picture of working with DOM in Dojo here is a list of recommended reading material:</p>
+<p>To get a full picture of working with DOM in Dojo, here is a list of recommended reading material:</p>
 <ul>
 <li><a href="http://dojotoolkit.org/documentation/tutorials/1.9/dom_functions/">Dojo DOM functions</a></li>
 <li><a href="http://dojotoolkit.org/reference-guide/1.9/dojo/dom-construct.html">domConstruct</a></li>
@@ -547,9 +547,9 @@
 <li><a href="http://dojotoolkit.org/reference-guide/1.9/dojo/query.html">query</a></li>
 </ul>
 <h2 id="bringing-it-all-together">Bringing it all together</h2>
-<p>Let's build a widget that combines everything we've read so far. The advanced widget will use a template, it will have a CSS file and use i18n. It will do an Ajax call to get all nodes in Company Home and use the <code>domConstruct</code> module to populate a table with the data.</p>
+<p>Let's build a widget that combines everything we've read so far. The advanced widget will use a template, it will have a CSS file, and use i18n. It will do an Ajax call to get all nodes in Company Home and use the <code>domConstruct</code> module to populate a table with the data.</p>
 <p>All this example code can be found in the part-two directory of the tutorial source code.</p>
-<p>The template is pretty simple, we define a table, variables for column headers, and a <code>tbody</code> with an attach-point so we can access it from the widget:</p>
+<p>The template is pretty simple: we define a table, variables for column headers, and a <code>tbody</code> with an attach-point so we can access it from the widget:</p>
 <p><code>src/main/amp/web/js/example/widgets/templates/AjaxWidget.html</code></p>
 <pre><code>&lt;div class=&quot;ajax-widget&quot;&gt;
     &lt;h1&gt;${widgetTitle}&lt;/h1&gt;
@@ -564,7 +564,7 @@
         &lt;tbody data-dojo-attach-point=&quot;containerNode&quot;&gt;&lt;/tbody&gt;
     &lt;/table&gt;    
 &lt;/div&gt;</code></pre>
-<p>We'll also need a i18n file to enable translations of our widget:</p>
+<p>We'll also need an i18n file to enable translations of our widget:</p>
 <p><code>src/main/amp/web/js/example/widgets/i18n/AjaxWidget.properties</code></p>
 <pre><code>widgetTitle=Nodes found in Company Home
 columnName=Name
@@ -640,14 +640,14 @@ columnDescription=Description</code></pre>
 <div class="figure">
 <img src="images/part-two-advanced-page.png" alt="Ajax example widget" /><p class="caption">Ajax example widget</p>
 </div>
-<p>If we break it down a bit, there really is not much to it. We pull in the dependencies we need: <code>CoreXhr</code>, <code>dom-construct</code>, <code>array</code> and <code>TemplatedMixin</code>. We also specify the template, css and i18n files.</p>
+<p>If we break it down a bit, there really is not much to it. We pull in the dependencies we need: <code>CoreXhr</code>, <code>dom-construct</code>, <code>array</code>, and <code>TemplatedMixin</code>. We also specify the template, css, and i18n files.</p>
 <p>The <code>buildRendering</code> method sets up the template with i18n, <code>postCreate</code> does an Ajax call to <code>Alfresco.constants.PROXY_URI + &quot;slingshot/doclib/treenode/node/alfresco/company/home&quot;</code> to get a list of all nodes in &quot;Company Home&quot;, and uses the <code>_onSuccessCallback</code> method to do the actual rendering.</p>
-<p>In the <code>_onSuccessCallback</code> method we check that we actually got results, then catch the <code>containerNode</code> attach-point from the template, loop the reulsts and constructs a row with two columns for each result.</p>
+<p>In the <code>_onSuccessCallback</code> method we check that we actually got results, then catch the <code>containerNode</code> attach-point from the template, loop the reulsts, and construct a row with two columns for each result.</p>
 <h2 id="inter-widget-communication">Inter-widget communication</h2>
-<p>Now that we know how to setup a page, build a widget and do various basic things with it (templates, i18n, Ajax etc), the next step is to build a full blown page with lots of widgets. Having a page with single serving widgets is fine, but we will quickly need to have the widgets communicate and trigger different actions across the whole page. But how can widgets communicate with each other? They're completely separate and decoupled, and that's a good thing.</p>
-<p>The Aikau framework introduces a publication/subscription system which in many aspects works like the old YUI2 Bubbling system. The idea is that we have a &quot;channel&quot; where you broadcast information in, and we setup widgets to subscribe on a channel and act upon the information.</p>
-<p>This could allows us to create a navigation widget where nodes can be selected. The navigation widget is only responsible for fetching the node, the rendering of the node is handled by another widget. Think about the document library for a moment, where there is a left menu that allows us to navigate the folder structure, and the content area is responsible for rendering the contents of the folder. In the document library the left menu fetches and renders a list of folders, but once you click a folder it also broadcasts information to the content area that listens in and renders the folder contents once it's been received.</p>
-<p>Let's skip the metaphor, because when we're looking at the code the terminology is a bit different. The channels are called topics and the information being broadcast is a payload, which could be anything, but usually it will be a JSON object. Once we extend <code>alfresco/core/Core</code> we inherit two methods: <code>alfPublish</code> and <code>alfSubscribe</code>, which allows us to publish and subscribe to a topic. A topic is simply a string so we have something to identify it by. The <code>alfPublish</code> method takes the topic as the first argument, followed by the payload like this:</p>
+<p>Now that we know how to setup a page, build a widget and do various basic things with it (templates, i18n, Ajax etc), the next step is to build a full blown page with lots of widgets. Having a page with single serving widgets is fine, but we will quickly need to have the widgets communicate with each other and trigger different actions across the whole page. But how can widgets communicate with each other? They're completely separate and decoupled, which is a good thing.</p>
+<p>The Aikau framework introduces a publication/subscription system which in many aspects works like the old YUI2 Bubbling system. The idea is that to have a &quot;channel&quot; where widgets broadcast information, and setup other widgets to subscribe to the channel and act upon the information.</p>
+<p>This allows us to create a navigation widget where nodes can be selected. The navigation widget is only responsible for fetching the node. The rendering of the node is handled by another widget. Think about the document library for a moment, where there is a left menu that allows us to navigate the folder structure, and the content area is responsible for rendering the contents of the folder. In the document library the left menu fetches and renders a list of folders, but once you click on a folder, it also broadcasts information to a channel. The content area subscribes on the channel, and renders the folder contents once it receives information on the channel.</p>
+<p>Let's skip the metaphor, because when we're looking at the code, the terminology is a bit different. The channels are called topics and the information being broadcast is a payload, which could be anything, but usually it will be a JSON object. Once we extend <code>alfresco/core/Core</code>, we inherit two methods: <code>alfPublish</code> and <code>alfSubscribe</code>, which allows us to publish and subscribe to a topic. A topic is simply a string, which gives us something to identify it by. The <code>alfPublish</code> method takes the topic as the first argument, followed by the payload like this:</p>
 <pre><code>this.alfPublish(&quot;MY_TOPIC&quot;, &quot;my payload&quot;);</code></pre>
 <p>The payload can either be a plain string, or you can pass objects directly like this:</p>
 <pre><code>this.alfPublish(&quot;MY_TOPIC&quot;, {nodes: [{name:&quot;node1&quot;}, {name: &quot;node2&quot;}]});</code></pre>
@@ -655,7 +655,7 @@ columnDescription=Description</code></pre>
 <pre><code>this.alfSubscribe(this.TutorialTopic, function(payload) {
     console.log(payload);
 });</code></pre>
-<p>Sometimes we don't want to have all our subscription logic inside a closure, in these cases we can use Dojo's <code>lang.hitch</code> method, to connect the subscription with a method on our object:</p>
+<p>Sometimes we don't want to have all our subscription logic inside a closure. In these cases we can use Dojo's <code>lang.hitch</code> method to connect the subscription with a method on our object:</p>
 <pre><code>define([&quot;dojo/_base/declare&quot;,
         &quot;dijit/_WidgetBase&quot;,
         &quot;alfresco/core/Core&quot;,
@@ -674,9 +674,9 @@ columnDescription=Description</code></pre>
 
         });
 });</code></pre>
-<p>One last thing to note, is that whenever we receive a JSON object as a payload, the topic will be added to the object as the key <code>alfTopic</code>. A simple JSON object like <code>{nodes: []}</code> published to &quot;MY_TOPIC&quot; will become <code>{alfTopic: &quot;MY_TOPIC&quot;, nodes: []}</code>. This is useful to identify where the payload originated from.</p>
-<p>This is the very basic idea behind the pub/sub system, so when it comes down to it, there really isn't much to it, however it gives the widgets so much power.</p>
-<h3 id="a-basic-pubsub-example">A basic Pub/Sub example</h3>
+<p>One last thing to note, is that whenever we receive a JSON object as a payload, the topic will be added to the object as the key <code>alfTopic</code>. A simple JSON object like <code>{nodes: []}</code> published to &quot;MY_TOPIC&quot; will become <code>{alfTopic: &quot;MY_TOPIC&quot;, nodes: []}</code>. This is useful in identifying where the payload originated from.</p>
+<p>This is the very basic idea behind the pub/sub system. When it comes down to it, there really isn't much to it. However, this is what gives the widgets so much power</p>
+<h3 id="a-basic-pubsub-example">A basic pub/sub example</h3>
 <p>Let's create a very simple page with two widgets. The first widget will have a textarea for inputting a payload and a button. Once the button is clicked, it publishes the value from the textarea to a topic. Next to the input widget there will be a widget that subscribes to the topic and puts it on the page.</p>
 <p>Create a new web script <code>pub-sub</code> that defines a page with the widget:</p>
 <p><code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/pages/pub-sub.get.desc.xml</code></p>
@@ -714,7 +714,7 @@ columnDescription=Description</code></pre>
 };</code></pre>
 <p>This example uses the <code>alfresco/layout/HorizontalWidgets</code> layout widget to put the two widgets next to each other.</p>
 <h4 id="a-simple-mixin-for-constants">A simple Mixin for constants</h4>
-<p>We have to be careful when handling topics. If we hardcode the topic name into each file, things starts to get messy. To solve this, we create a very simple object that defines a kind of constant with the topic name. This way we can pull in the topic mixin and reference them instead. The topics mixin looks like this:</p>
+<p>We have to be careful when handling topics. If we hardcode the topic name into each file, things start to get messy. To solve this, we create a very simple object that defines a constant with the topic name. This way we can pull in the topic mixin and reference the constants instead. The topics mixin looks like this:</p>
 <p><code>src/main/amp/web/js/example/widgets/_TopicsMixin.js</code></p>
 <pre><code>define([&quot;dojo/_base/declare&quot;],
     function(declare) {
@@ -723,7 +723,7 @@ columnDescription=Description</code></pre>
             TutorialTopic: &quot;ALFRESCO_TUTORIAL_TOPIC&quot;
         });
     });</code></pre>
-<p>To use the mixin we simply define and declare the object, this way we extend it, and we can reference the topic name with <code>this.TutorialTopic</code> instead of hardcoding the topic into each file.</p>
+<p>To use the mixin we simply define and declare the object. This way we extend it, and we can reference the topic name with <code>this.TutorialTopic</code> instead of hardcoding the topic into each file.</p>
 <p>For a very simple example like this, it might seem a bit overkill. However, when developing a big and complex matrix of widgets, we'll be grateful to have this.</p>
 <h4 id="inputwidget">InputWidget</h4>
 <p>For the InputWidget we'll use a few tricks to create a textarea and a button. First of all we need a simple template with a few attach points so we can place elements on the page:</p>
@@ -776,15 +776,15 @@ columnDescription=Description</code></pre>
 
         });
 });</code></pre>
-<p>The code is straight forward, create a <code>DojoTextarea</code> and a <code>AlfButton</code>. Hitch the <code>_onPublish</code> method to the <code>onClick</code> event on the button, and place them in the template. Once the button is clicked, we publish the value of the textarea to the topic.</p>
+<p>The code is straight forward. Create a <code>DojoTextarea</code> and a <code>AlfButton</code>. Hitch the <code>_onPublish</code> method to the <code>onClick</code> event on the button, and place them in the template. Once the button is clicked, we publish the value of the textarea to the topic.</p>
 <h4 id="renderwidget">RenderWidget</h4>
-<p>For the render widget we also need a simple template with an attach point so we can display the value. The template look like this:</p>
+<p>For the render widget we also need a simple template with an attach point so we can display the value. The template looks like this:</p>
 <p><code>src/main/amp/web/js/example/widgets/templates/RenderWidget.html</code></p>
 <pre><code>&lt;div class=&quot;tutorial-input-widget-container&quot;&gt;
     &lt;b&gt;${renderWidgetHeading}&lt;/b&gt;
     &lt;span data-dojo-attach-point=&quot;payloadContainer&quot;&gt;&lt;/span&gt;
 &lt;/div&gt;</code></pre>
-<p>The widget itself is also easy, it pulls in TopicsMixin, setup the template with some i18n. It also subscribes to the topic, once it receive something it uses <code>domConstruct</code> to create a <code>&lt;p&gt;</code> element with the text.</p>
+<p>The widget itself is also easy, it pulls in TopicsMixin and setup the template with i18n. It also subscribes to the topic, and once it receives something, it uses <code>domConstruct</code> to create a <code>&lt;p&gt;</code> element with the text.</p>
 <p><code>src/main/amp/web/js/example/widgets/RenderWidget.js</code></p>
 <pre><code>define([&quot;dojo/_base/declare&quot;,
         &quot;dijit/_WidgetBase&quot;,
@@ -826,9 +826,9 @@ columnDescription=Description</code></pre>
 <div class="figure">
 <img src="images/part-three-header-1.png" alt="Share 4.2 Header" /><p class="caption">Share 4.2 Header</p>
 </div>
-<p>The header component consists of the black top menu and the logo/title/buttons below it. It's defined in <code>WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/header/share-header.get.js</code>. This file is pretty simple, it includes <code>WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/imports/share-header.lib.js</code> which is where all the magic happens.</p>
-<p>Now the header is a big component. It handles everything from the menu, user dashboard title, site title, buttons etc, so there is a lot of code there. In the end it ends up with a big JSON page model definition, but it's too big to tackle all of it.</p>
-<p>Luckily we have some very good options for extending a JSON model, instead of overwriting it. First of all, we need to create a Share module extension that will define which customizations we have, and which files to target. This is done in a XML file in the <code>src/main/amp/config/alfresco/web-extension/site-data/extensions/</code> folder. Once it has been created, we need to create a javascript file where we can use a new root scoped object called <code>widgetUtils</code>, which allows us to find components in an existing JSON model and work with it.</p>
+<p>The header component consists of the black top menu and the logo/title/buttons below it. It's defined in <code>WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/header/share-header.get.js</code>. This file is pretty simple. It includes <code>WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/imports/share-header.lib.js</code> which is where all the magic happens.</p>
+<p>Now, the header is a big component. It handles everything from the menu, user dashboard title, site title, buttons etc, so there is a lot of code there. In the end it ends up with a big JSON page model definition, but the definition is too big to go through all of it.</p>
+<p>Luckily, we have some very good options for extending a JSON model, instead of overwriting it. First of all, we need to create a Share module extension that will define which customizations we have and which files to target. This is done in an XML file in the <code>src/main/amp/config/alfresco/web-extension/site-data/extensions/</code> folder. Once it has been created, we need to create a javascript file where we can use a new root scoped object called <code>widgetUtils</code>, which allows us to find components in an existing JSON model and work with it.</p>
 <h2 id="creating-an-extension">Creating an extension</h2>
 <p>To extend any web script in Share, we need to define a custom extension module. Create a new XML file ending in <code>src/main/amp/config/alfresco/web-extension/site-data/extensions/</code> like this:</p>
 <pre><code>&lt;extension&gt;
@@ -847,8 +847,8 @@ columnDescription=Description</code></pre>
   &lt;/modules&gt;
 &lt;/extension&gt;</code></pre>
 <p>Here we define a module, give it an ID, version and tell it to auto deploy. If you do not specify the auto deploy, you will have to manually go to the module deployment page on <code>http://localhost:8081/share/page/modules/deploy</code> to deploy it.</p>
-<p>The <code>&lt;customizations&gt;</code> section is used to tell Share which folder we want to target, and where it can find the source for the customizations. This is not specific to the Aikau framework, it's been in Share for a while, and it's the best way to do clean extensions of Share's own files. We're targeting <code>org.alfresco.share.header</code> which translates into <code>WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/header</code>. Anything in this folder can be extended in our own folder in <code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header/header</code>.</p>
-<p>The general idea behind this, is that you can extend any web script in Share. Our script will be run after Share's own, that way we can hook into the model object and modify as much as we want. We can extend/overwrite Freemarker templates using this same technique.</p>
+<p>The <code>&lt;customizations&gt;</code> section is used to tell Share which folder we want to target, and where it can find the source for the customizations. This is not specific to the Aikau framework, as it's been in Share for a while, and it's the best way to do clean extensions of Share's own files. We're targeting <code>org.alfresco.share.header</code> which translates into <code>WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/header</code>. Anything in this folder can be extended in our own folder in <code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header/header</code>.</p>
+<p>The general idea behind this is that you can extend any web script in Share. Our script will run after Share's own. That way we can hook into the model object and modify as much as we want. We can extend/overwrite Freemarker templates using this same technique.</p>
 <p>On top of all of this, you can inject evaluators into the extension, so you can create custom evaluators or use the existing evaluators to only have your extension apply in certain situations.</p>
 <h2 id="adding-a-menu-item-to-the-header">Adding a menu item to the header</h2>
 <p>Now that we've defined an extension and told Share that the target is <code>org.alfresco.share.header</code>, create a web script controller called <code>share-header.get.js</code> in <code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/tutorial/header</code>. Let's find the menu and add our own menu item that links to the user's profile:</p>
@@ -865,9 +865,9 @@ if (headerMenu != null) {
     });
 }</code></pre>
 <p>This is all that is required to extend an existing JSON model. We're using <code>widgetUtils</code> to find the <code>HEADER_APP_MENU_BAR</code> widget. Once we have it, we simply push a widget into it. We can push any widget we want, but since we're in the header, we should probably limit it to smaller things. Here we could remove, add or change any of the things in the header. Want a new search box? Find the <code>HEADER_SEARCH_BOX</code> widget and replace it with a new one.</p>
-<p>To figure out what ID's to target we have two options. First option is to go through the <code>share-header.lib.js</code> file, which defines the whole header. The problem with this file is that it's very big and confusing to dig into. The alternative is to use a tool like Firebug/Developer tools in Chrome and inspect the elements from the browser. If we look at the search box, we'll see that its markup is like this:</p>
+<p>To figure out what ID's to target we have two options. First option is to go through the <code>share-header.lib.js</code> file, which defines the whole header. The problem with this file is that it's very big and confusing to dig into. The alternative is to use a tool like Firebug/Developer tools in Chrome and inspect the elements from the browser. If we look at the search box, we'll see that its markup looks like this:</p>
 <pre><code>&lt;div id=&quot;HEADER_SEARCH_BOX&quot; class=&quot;alf-search-box&quot; widgetid=&quot;HEADER_SEARCH_BOX&quot;&gt;</code></pre>
-<p>Bingo, <code>widgetid=&quot;HEADER_SEARCH_BOX&quot;</code>, and there we go, we can use <code>widgetUtils</code> to find it and change it.</p>
+<p>Bingo, <code>widgetid=&quot;HEADER_SEARCH_BOX&quot;</code>, and there we go. We can use <code>widgetUtils</code> to find it and change it.</p>
 <p>Let's add a drop down menu with a custom link:</p>
 <p><code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header/share-header.get.js</code></p>
 <pre><code>headerMenu.config.widgets.push({
@@ -887,8 +887,8 @@ if (headerMenu != null) {
     }
 });</code></pre>
 <h2 id="adding-a-link-to-the-right-of-the-title-bar">Adding a link to the right of the title bar</h2>
-<p>On sites we have a menu to the right with links to Document Library, Members etc. How can we target this?</p>
-<p>Here is an example on how to add a widget on the user dashboard page:</p>
+<p>In the context of a site, there is a menu to the right with links to Document Library, Members etc. How can we target this?</p>
+<p>Here is an example on how to add a widget to the user dashboard page:</p>
 <p><code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header/share-header.get.js</code></p>
 <pre><code>/* Add link on user dashboard */
 if (page.titleId == &quot;page.userDashboard.title&quot;) {
@@ -904,8 +904,8 @@ if (page.titleId == &quot;page.userDashboard.title&quot;) {
 }</code></pre>
 <h2 id="removing-widgets">Removing widgets</h2>
 <p>Now that we can add or change widgets, how about removing one?</p>
-<p>Unfortunately there is a bug in 4.2 that makes removing widgets fail. See the full details here: <a href="https://issues.alfresco.com/jira/browse/ALF-19930">https://issues.alfresco.com/jira/browse/ALF-19930</a>. This will be fixed in one of the next releases (4.2.2 Enterprise / 4.3 community), until then we have to rely on a fix provided in the comments on the JIRA ticket.</p>
-<p>In the comments section we find this function we can use to remove widgets:</p>
+<p>Unfortunately there is a bug in 4.2 that makes removing widgets fail. See the full details here: <a href="https://issues.alfresco.com/jira/browse/ALF-19930">https://issues.alfresco.com/jira/browse/ALF-19930</a>. This will be fixed in one of the next releases (4.2.2 Enterprise / 4.3 community). Until then we have to rely on a fix provided in the comments on the JIRA ticket.</p>
+<p>In the comments section we find a function that can be use to remove widgets:</p>
 <pre><code>function findAndRemoveIn(obj, arrContext, arrIdx, id) {
     var idx, max, key;
     if (obj !== undefined &amp;&amp; obj !== null) {
@@ -935,7 +935,7 @@ if (page.titleId == &quot;page.userDashboard.title&quot;) {
         }
     }
 }</code></pre>
-<p>We simply have to copy this function into our code to use it. There is no way around it, until this gets fixed in a later release.</p>
+<p>We simply have to copy this function into our code to use it. There is no way around it, until a later release, when it will be fixed.</p>
 <p>Let's remove the &quot;Shared files&quot; in the header:</p>
 <p><code>src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header/share-header.get.js</code></p>
 <pre><code>findAndRemoveIn(model.jsonModel.widgets, null, null, &quot;HEADER_SHARED_FILES&quot;);</code></pre>
@@ -944,8 +944,8 @@ if (page.titleId == &quot;page.userDashboard.title&quot;) {
 <img src="images/part-three-header-2.png" alt="Header customizations" /><p class="caption">Header customizations</p>
 </div>
 <h1 id="closing-thoughts">Closing thoughts</h1>
-<p>This tutorial has shown how to build a complete page with the new JSON page definition, how to write widgets using templates, i18n, templates, Ajax and much more. It also shows how to extend existing pages in Share.</p>
-<p>My closing thoughts on this tutorial is that the Aikau framework is really cool, and it will provide a great framework for writing custom pages in Share. Unfortunately there is not that much documentation on the subject, so the best way to get help when things go bad is to go to the source and dig in. Also reading up on Dojo in general, specially <a href="http://dojotoolkit.org/documentation/tutorials/1.9/modules/">Dojo's AMD Module system</a> is a great place to start.</p>
+<p>This tutorial has shown how to build a complete page with the new JSON page definition and how to write widgets using templates, i18n, templates, Ajax, and much more. It also shows how to extend existing pages in Share.</p>
+<p>My closing thoughts on this tutorial is that the Aikau framework is really cool, and that it will provide a great framework for writing custom pages in Share. Unfortunately there is not that much documentation on the subject, so the best way to get help when things go wrong is to go to the source and dig in. Also, reading up on Dojo in general, especially <a href="http://dojotoolkit.org/documentation/tutorials/1.9/modules/">Dojo's AMD Module system</a>, is a great place to start.</p>
 <h2 id="where-to-find-more-information">Where to Find More Information</h2>
 <ul>
 <li><a href="http://blogs.alfresco.com/wp/developer/">Dave Draper's Blog</a> provides great insights on everything related to Share and Surf</li>

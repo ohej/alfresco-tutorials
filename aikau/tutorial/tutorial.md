@@ -222,7 +222,7 @@ The result looks like this:
 
 ![Simple page two widgets in a horizontal layout](images/part-one-simple-page-4.png)
 
-Notice how the widgets are nested inside each other. The `HorizontalWidgets` has a config object with a list of widgets, each with their own peoperties. The configuration includes a parameter for the horizontal widget `widgetWidth: 50` which defines the percentage width each widget should recieve.
+Notice how the widgets are nested inside each other. The `HorizontalWidgets` has a config object with a list of widgets, each with their own properties. The configuration includes a parameter for the horizontal widget `widgetWidth: 50` which defines the percentage width each widget should recieve.
 
 ## The built-in widgets
 
@@ -335,7 +335,7 @@ The last thing that needs to be done is to tell Share about the path for the wid
 	  </modules>
 	</extension>
 
-Restart share and visit [http://localhost:8081/share/page/dp/ws/simple-page](http://localhost:8081/share/page/dp/ws/custom-widget-page) to see the result.
+Restart share and visit [http://localhost:8081/share/page/dp/ws/custom-widget-page](http://localhost:8081/share/page/dp/ws/custom-widget-page) to see the result.
 
 
 ## Breaking down the widget code
@@ -418,8 +418,8 @@ Notice that the function definition and return statements are two different, sep
 	        "alfresco/core/Core",
             "dojo/_base/array",        
 	    ],
-		function(declare, _Widget, Core, AlfButton, array) {
-		    return declare([_Widget, Core, AlfButton], {
+		function(declare, _Widget, Core, array) {
+		    return declare([_Widget, Core, array], {
 		      var list = [1,2,3];
 		      array.forEach( list, function(x) {
 		        console.log(x);

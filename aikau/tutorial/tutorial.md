@@ -999,7 +999,7 @@ To extend any web script in Share, we need to define a custom extension module. 
 
 Here we define a module, give it an ID, version and tell it to auto deploy. If you do not specify the auto deploy, you will have to manually go to the module deployment page on `http://localhost:8081/share/page/modules/deploy` to deploy it.
 
-The `<customizations>` section is used to tell Share which folder we want to target, and where it can find the source for the customizations. This is not specific to the Aikau framework, as it's been in Share for a while, and it's the best way to do clean extensions of Share's own files. We're targeting `org.alfresco.share.header` which translates into `WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/header`. Anything in this folder can be extended in our own folder in `src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header/header`.
+The `<customizations>` section is used to tell Share which folder we want to target, and where it can find the source for the customizations. This is not specific to the Aikau framework, as it's been in Share for a while, and it's the best way to do clean extensions of Share's own files. We're targeting `org.alfresco.share.header` which translates into `WEB-INF/classes/alfresco/site-webscripts/org/alfresco/share/header`. Anything in this folder can be extended in our own folder in `src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header`.
 
 The general idea behind this is that you can extend any web script in Share. Our script will run after Share's own. That way we can hook into the model object and modify as much as we want. We can extend/overwrite Freemarker templates using this same technique.
 
@@ -1007,7 +1007,7 @@ On top of all of this, you can inject evaluators into the extension, so you can 
 
 ## Adding a menu item to the header
 
-Now that we've defined an extension and told Share that the target is `org.alfresco.share.header`, create a web script controller called `share-header.get.js` in `src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/tutorial/header`. Let's find the menu and add our own menu item that links to the user's profile:
+Now that we've defined an extension and told Share that the target is `org.alfresco.share.header`, create a web script controller called `share-header.get.js` in `src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header`. Let's find the menu and add our own menu item that links to the user's profile:
 
 `src/main/amp/config/alfresco/web-extension/site-webscripts/com/example/header/share-header.get.js`
 
